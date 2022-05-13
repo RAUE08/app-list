@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react' // importar React, useState e useEffect do react
 import './styles.css'
 
-import { Card } from '../../components/Card'
+import { Card, CardProps } from '../../components/Card'
+
+interface ProfileResponse {
+  name: string
+  avatar_url: string
+}
+
+interface User {
+  name: string
+  avatar: string
+}
 
 export const Home = () => {
   const [studentName, setStudentName] = useState('') // Armazenar valor do input
-  const [students, setStudents] = useState([]) // Armazenar lista de estudantes em um array
-  const [user, setUser] = useState({name: '', avatar: ''}) // Armazenar dois objetos
+  const [students, setStudents] = useState<CardProps[]>([]) // Armazenar lista de estudantes em um array
+  const [user, setUser] = useState<User>({} as User) // Armazenar dois objetos
 
   function handleAddStudent() { // Criar objetos
     const newStudent = {
@@ -40,12 +50,12 @@ export const Home = () => {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch('https://api.github.com/users/RAUE08')
-      const data = await response.json()
+      const data = await response.json() as ProfileResponse
       console.log(" Dados ===> ", data)
 
       setUser({
         name: data.name,
-        avatar: data.avatar_url,
+        avatar: data.avatar_url
       })
     }
 
